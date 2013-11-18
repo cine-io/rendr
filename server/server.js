@@ -5,7 +5,8 @@ var _ = require('underscore')
   , Router = require('./router')
   , RestAdapter = require('./data_adapter/rest_adapter')
   , ViewEngine = require('./viewEngine')
-  , middleware = require('./middleware');
+  , middleware = require('./middleware')
+  , modelUtils = require('../shared/modelUtils');
 
 module.exports = Server;
 
@@ -27,6 +28,7 @@ var defaultOptions = {
 function Server(options) {
   this.options = options || {};
   _.defaults(this.options, defaultOptions);
+  modelUtils.entryPath = this.options.entryPath;
 
   this.expressApp = express();
 

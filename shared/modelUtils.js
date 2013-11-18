@@ -8,6 +8,7 @@ BaseCollection = require('./base/collection');
 utils = module.exports;
 
 utils._classMap = {};
+utils.entryPath = ''
 
 utils.getModel = function(path, attrs, options) {
   var Model;
@@ -27,12 +28,12 @@ utils.getCollection = function(path, models, options) {
 
 utils.getModelConstructor = function(path) {
   path = utils.underscorize(path);
-  return utils._classMap[path] || require(rendr.entryPath + "app/models/" + path);
+  return utils._classMap[path] || require(utils.entryPath + "app/models/" + path);
 };
 
 utils.getCollectionConstructor = function(path) {
   path = utils.underscorize(path);
-  return utils._classMap[path] || require(rendr.entryPath + "app/collections/" + path);
+  return utils._classMap[path] || require(utils.entryPath + "app/collections/" + path);
 };
 
 utils.isModel = function(obj) {
