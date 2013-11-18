@@ -19,7 +19,8 @@ var defaultOptions = {
   appData: {},
   paths: {},
   viewsPath: null,
-  defaultEngine: 'js'
+  defaultEngine: 'js',
+  entryPath: process.cwd() + '/'
 };
 
 
@@ -42,7 +43,7 @@ function Server(options) {
    * Tell Express to use our ViewEngine to handle .js, .coffee files.
    * This can always be overridden in your app.
    */
-  this.expressApp.set('views', this.options.viewsPath || (rendr.entryPath + 'app/views'));
+  this.expressApp.set('views', this.options.viewsPath || (this.options.entryPath + 'app/views'));
   this.expressApp.set('view engine', this.options.defaultEngine);
   this.expressApp.engine(this.options.defaultEngine, this.viewEngine.render);
 
@@ -97,7 +98,8 @@ Server.prototype.configure = function(fn) {
    * Initialize the Rendr app, accessible at `req.rendrApp`.
    */
   this.expressApp.use(middleware.initApp(this.options.appData, {
-    apiPath: this.options.apiPath
+    apiPath: this.options.apiPath,
+    entryPath: this.options.entryPath
   }));
 
   /**

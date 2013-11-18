@@ -8,6 +8,4 @@ if (!this.window) {
   exports.createServer = function(options) {
     return exports.server = new Server(options);
   };
-
-  exports.entryPath = process.cwd() + '/';
 }
