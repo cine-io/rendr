@@ -1,10 +1,9 @@
 /*global rendr*/
 
-var Backbone, BaseView, modelUtils, _;
+var Backbone, BaseView, _;
 
 _ = require('underscore');
 Backbone = require('backbone');
-modelUtils = require('../modelUtils');
 
 function noop() {}
 
@@ -12,8 +11,9 @@ module.exports = BaseView = Backbone.View.extend({
   initialize: function(options) {
     var obj;
 
-    this.name = this.name || modelUtils.underscorize(this.constructor.id || this.constructor.name);
     this.parseOptions(options);
+
+    this.name = this.name || this.app.modelUtils.underscorize(this.constructor.id || this.constructor.name);
     this.postInitialize();
     if ((obj = this.model || this.collection) && this.renderOnRefresh) {
       obj.on('refresh', this.render, this);
@@ -38,6 +38,8 @@ module.exports = BaseView = Backbone.View.extend({
 
     if (options.app != null) {
       this.app = this.options.app;
+    }else {
+      throw new Error("options.app expected when initializing a new view")
     }
 
     if (options.parentView != null) {
@@ -46,16 +48,16 @@ module.exports = BaseView = Backbone.View.extend({
 
     if (options.model != null) {
       if (!(options.model instanceof Backbone.Model) && options.model_name) {
-        options.model = modelUtils.getModel(options.model_name, options.model, {
+        options.model = this.app.modelUtils.getModel(options.model_name, options.model, {
           parse: true
         });
       }
-      options.model_name = options.model_name || modelUtils.modelName(options.model.constructor);
+      options.model_name = options.model_name || this.app.modelUtils.modelName(options.model.constructor);
       options.model_id = options.model.id;
     }
 
     if (options.collection != null) {
-      options.collection_name = options.collection_name || modelUtils.modelName(options.collection.constructor);
+      options.collection_name = options.collection_name || this.app.modelUtils.modelName(options.collection.constructor);
       options.collection_params = options.collection.params;
     }
 
@@ -167,6 +169,7 @@ module.exports = BaseView = Backbone.View.extend({
 
     // Add model & collection meta data from options,
     // as well as any non-object option values.
+    modelUtils = this.app.modelUtils;
     _.each(this.options, function(value, key) {
       var id, modelOrCollectionId;
 

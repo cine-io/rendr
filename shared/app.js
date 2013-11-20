@@ -5,11 +5,13 @@
  * The client also subclasses it for client-specific stuff.
  */
 
-var Backbone, ClientRouter, Fetcher;
+var Backbone, ClientRouter, Fetcher, clientEntryPath;
 
 require('./globals');
 Backbone = require('backbone');
 Fetcher = require('./fetcher');
+
+clientEntryPath = '';
 
 if (!global.isServer) {
   // client side only, entryPath is always empty
@@ -30,6 +32,10 @@ module.exports = Backbone.Model.extend({
    */
   initialize: function(attributes, options) {
     this.options = options || {};
+
+    modelUtils = require('./modelUtils')
+    this.modelUtils = modelUtils;
+    this.modelUtils.entryPath = this.options.entryPath || clientEntryPath;
 
     /**
      * On the server-side, you can access the Express request, `req`.
@@ -57,7 +63,7 @@ module.exports = Backbone.Model.extend({
     if (!global.isServer) {
       new ClientRouter({
         app: this,
-        entryPath: ''
+        entryPath: clientEntryPath
       });
     }
 
