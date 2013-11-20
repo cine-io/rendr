@@ -5,11 +5,12 @@
  * The client also subclasses it for client-specific stuff.
  */
 
-var Backbone, ClientRouter, Fetcher, clientEntryPath;
+var Backbone, ClientRouter, Fetcher, clientEntryPath, modelUtils;
 
 require('./globals');
 Backbone = require('backbone');
 Fetcher = require('./fetcher');
+ModelUtils = require('./modelUtils')
 
 clientEntryPath = '';
 
@@ -33,9 +34,7 @@ module.exports = Backbone.Model.extend({
   initialize: function(attributes, options) {
     this.options = options || {};
 
-    modelUtils = require('./modelUtils')
-    this.modelUtils = modelUtils;
-    this.modelUtils.entryPath = this.options.entryPath || clientEntryPath;
+    this.modelUtils = this.options.modelUtils || new ModelUtils(this.options.entryPath || clientEntryPath);
 
     /**
      * On the server-side, you can access the Express request, `req`.
