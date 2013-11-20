@@ -8,7 +8,7 @@ module.exports = exports = ViewEngine;
 
 function ViewEngine(options) {
   this.options = options || {};
-
+  this.modelUtils = this.options.modelUtils;
   /**
    * Ensure `render` is bound to this instance, because it can be passed around.
    */
@@ -72,11 +72,10 @@ ViewEngine.prototype.getViewHtml = function getViewHtml(viewPath, locals, app) {
 };
 
 ViewEngine.prototype.getBootstrappedData = function getBootstrappedData(locals, app) {
-  var modelUtils = require('../shared/modelUtils')
-    , bootstrappedData = {};
+  var bootstrappedData = {};
 
   _.each(locals, function(modelOrCollection, name) {
-    if (modelUtils.isModel(modelOrCollection) || modelUtils.isCollection(modelOrCollection)) {
+    if (this.modelUtils.isModel(modelOrCollection) || this.modelUtils.isCollection(modelOrCollection)) {
       bootstrappedData[name] = {
         summary: app.fetcher.summarize(modelOrCollection),
         data: modelOrCollection.toJSON()
