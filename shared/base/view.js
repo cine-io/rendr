@@ -39,7 +39,7 @@ module.exports = BaseView = Backbone.View.extend({
     if (options.app != null) {
       this.app = this.options.app;
     }else {
-      throw "this is broken dude"
+      throw new Error("options.app expected when initializing a new view")
     }
 
     if (options.parentView != null) {
