@@ -34,7 +34,8 @@ module.exports = Backbone.Model.extend({
   initialize: function(attributes, options) {
     this.options = options || {};
 
-    this.modelUtils = this.options.modelUtils || new ModelUtils(this.options.entryPath || clientEntryPath);
+    entryPath = this.options.entryPath || clientEntryPath
+    this.modelUtils = this.options.modelUtils || new ModelUtils(entryPath);
 
     /**
      * On the server-side, you can access the Express request, `req`.
@@ -47,7 +48,7 @@ module.exports = Backbone.Model.extend({
      * Initialize the `templateAdapter`, allowing application developers to use whichever
      * templating system they want.
      */
-    this.templateAdapter = require(this.get('templateAdapter'));
+    this.templateAdapter = require(this.get('templateAdapter'))({entryPath: entryPath});
 
     /**
      * Instantiate the `Fetcher`, which is used on client and server.
