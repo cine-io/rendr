@@ -34,7 +34,8 @@ module.exports = Backbone.Model.extend({
   initialize: function(attributes, options) {
     this.options = options || {};
 
-    this.modelUtils = this.options.modelUtils || new ModelUtils(this.options.entryPath || clientEntryPath);
+    entryPath = this.options.entryPath || clientEntryPath
+    this.modelUtils = this.options.modelUtils || new ModelUtils(entryPath);
 
     /**
      * On the server-side, you can access the Express request, `req`.
@@ -48,6 +49,12 @@ module.exports = Backbone.Model.extend({
      * templating system they want.
      */
     this.templateAdapter = require(this.get('templateAdapter'));
+
+    /**
+     * The default pattern `/.+/` is very greedy; it matches anything, including nested paths.
+     * To add rules that should match before this default rule, `unshift` them from this array.
+     */
+    this.templateAdapter.templatePatterns.push({pattern: /.+/, src: entryPath + '/app/templates/compiledTemplates'})
 
     /**
      * Instantiate the `Fetcher`, which is used on client and server.
