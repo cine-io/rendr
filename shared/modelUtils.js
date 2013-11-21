@@ -93,7 +93,6 @@ module.exports = ModelUtils = (function() {
 
   ModelUtils.prototype.modelIdAttribute = function(modelName) {
     var constructor;
-    constructor = void 0;
     constructor = this.getModelConstructor(modelName);
     return constructor.prototype.idAttribute;
   };
