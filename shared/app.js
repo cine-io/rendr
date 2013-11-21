@@ -5,7 +5,7 @@
  * The client also subclasses it for client-specific stuff.
  */
 
-var Backbone, ClientRouter, Fetcher, clientEntryPath, modelUtils;
+var Backbone, ClientRouter, Fetcher, clientEntryPath, ModelUtils;
 
 require('./globals');
 Backbone = require('backbone');
