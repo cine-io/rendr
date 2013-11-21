@@ -48,13 +48,7 @@ module.exports = Backbone.Model.extend({
      * Initialize the `templateAdapter`, allowing application developers to use whichever
      * templating system they want.
      */
-    this.templateAdapter = require(this.get('templateAdapter'));
-
-    /**
-     * The default pattern `/.+/` is very greedy; it matches anything, including nested paths.
-     * To add rules that should match before this default rule, `unshift` them from this array.
-     */
-    this.templateAdapter.templatePatterns.push({pattern: /.+/, src: entryPath + '/app/templates/compiledTemplates'})
+    this.templateAdapter = require(this.get('templateAdapter'))({entryPath: entryPath});
 
     /**
      * Instantiate the `Fetcher`, which is used on client and server.
