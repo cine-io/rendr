@@ -9,19 +9,22 @@ var _ = require('underscore')
 
 module.exports = Server;
 
-var defaultOptions = {
-  dataAdapter: null,
-  dataAdapterConfig: null,
-  viewEngine: null,
-  errorHandler: null,
-  notFoundHandler: null,
-  apiPath: '/api',
-  appData: {},
-  paths: {},
-  viewsPath: null,
-  defaultEngine: 'js',
-  entryPath: process.cwd() + '/'
-};
+function defaultOptions(){
+  return {
+    dataAdapter: null,
+    dataAdapterConfig: null,
+    viewEngine: null,
+    errorHandler: null,
+    notFoundHandler: null,
+    mountPath: null,
+    apiPath: '/api',
+    appData: {},
+    paths: {},
+    viewsPath: null,
+    defaultEngine: 'js',
+    entryPath: process.cwd() + '/'
+  };
+}
 
 
 function Server(options) {
@@ -31,7 +34,7 @@ function Server(options) {
   }
 
   this.options = options || {};
-  _.defaults(this.options, defaultOptions);
+  _.defaults(this.options, defaultOptions());
 
   this.expressApp = express();
 
