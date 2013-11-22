@@ -2,7 +2,7 @@
 
 var path = require('path')
   , _ = require('underscore')
-  , layoutTemplate;
+  , layoutTemplates = {};
 
 module.exports = exports = ViewEngine;
 
@@ -46,13 +46,13 @@ ViewEngine.prototype.renderWithLayout = function renderWithLayout(locals, app, c
 ViewEngine.prototype.getLayoutTemplate = function getLayoutTemplate(app, callback) {
   var layoutPath;
 
-  if (layoutTemplate) {
-    return callback(null, layoutTemplate);
+  if (layoutTemplates[app.options.entryPath]) {
+    return callback(null, layoutTemplates[app.options.entryPath]);
   }
   app.templateAdapter.getLayout('__layout', app.options.entryPath, function(err, template) {
     if (err) return callback(err);
-    layoutTemplate = template;
-    callback(err, layoutTemplate);
+    layoutTemplates[app.options.entryPath] = template;
+    callback(err, template);
   });
 };
 
