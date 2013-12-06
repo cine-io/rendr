@@ -146,7 +146,7 @@ syncer.formatClientUrl = function(url, api) {
   if (api) {
     prefix += '/' + api;
   }
-  prefix += '/-';
+  prefix += '/'+this.app.get('apiVersion');
   return prefix + url;
 };
 

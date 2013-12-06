@@ -18,6 +18,7 @@ function defaultOptions(){
     notFoundHandler: null,
     mountPath: null,
     apiPath: '/api',
+    apiVersion: '-',
     appData: {},
     paths: {},
     viewsPath: null,
@@ -107,6 +108,7 @@ Server.prototype.configure = function(fn) {
    */
   this.expressApp.use(middleware.initApp(this.options.appData, {
     apiPath: this.options.apiPath,
+    apiVersion: this.options.apiVersion,
     entryPath: this.options.entryPath,
     modelUtils: this.options.modelUtils
   }));
@@ -120,7 +122,7 @@ Server.prototype.configure = function(fn) {
   /**
    * Add the API handler.
    */
-  this.expressApp.use(this.options.apiPath, middleware.apiProxy(dataAdapter));
+  this.expressApp.use(this.options.apiPath, middleware.apiProxy(dataAdapter, this.options.apiVersion));
 
   /**
    * Add the routes for everything defined in our routes file.
